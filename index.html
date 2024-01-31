@@ -88,6 +88,10 @@
                 height: '200',
                 width: '100%',
                 videoId: getVideoId(),
+                playerVars: {
+                    'playlist': getVideoId(),
+                    'loop': 1,
+                },
                 events: {
                     'onReady': onPlayerReady
                 }
