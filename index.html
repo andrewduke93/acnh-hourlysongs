@@ -162,7 +162,8 @@
 
         function updateNextUp() {
             const nextUpElement = document.getElementById('nextUp');
-            const nextHour = (new Date().getHours() + 1) % 24;
+            const currentHour = new Date().getHours();
+            const nextHour = (currentHour + 1) % 24;
             const amPm = nextHour < 12 ? 'AM' : 'PM';
             const nextVideoTitle = `Animal Crossing Music ${nextHour % 12 === 0 ? 12 : nextHour % 12} ${amPm}`;
             nextUpElement.textContent = `Next Up: ${nextVideoTitle}`;
