@@ -80,9 +80,8 @@
             "https://www.youtube.com/watch?v=a73Olh6uufc"  // 11 PM
         ];
 
-        const apiKey = "AIzaSyCi7eEcbtb92UyEFmFdyiF3PBNK0fvFRy8";
-
         let player;
+        let countdownInterval;
 
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('player', {
@@ -113,22 +112,24 @@
         }
 
         function setVideoSwitchInterval() {
-            setInterval(() => {
+            countdownInterval = setInterval(() => {
                 player.loadVideoById(getVideoId());
+                resetCountdown();
             }, 60 * 60 * 1000);
+
+            // Initial countdown
+            updateCountdown(getSecondsUntilNextHour());
         }
 
         function getVideoId() {
-            const currentDate = new Date();
-            const currentHour = currentDate.getHours();
-            return videoUrls[currentHour % videoUrls.length].split('v=')[1];
+            return videoUrls[new Date().getHours() % videoUrls.length].split('v=')[1];
         }
 
         function updateCountdown(seconds) {
             const countdownElement = document.getElementById('countdown');
 
             // Update countdown every second
-            const countdownInterval = setInterval(() => {
+            countdownInterval = setInterval(() => {
                 const minutes = Math.floor(seconds / 60);
                 const remainingSeconds = seconds % 60;
 
@@ -142,18 +143,27 @@
             }, 1000);
         }
 
-        function updateNextUp(nextHour, nextVideoTitle) {
-            const nextUpElement = document.getElementById('nextUp');
-            nextUpElement.textContent = `Next Up: ${formatHour(nextHour)} - ${nextVideoTitle}`;
+        function resetCountdown() {
+            clearInterval(countdownInterval);
+            updateCountdown(getSecondsUntilNextHour());
         }
 
-        function formatHour(hour) {
-            return hour % 12 || 12;
+        function getSecondsUntilNextHour() {
+            const now = new Date();
+            const seconds = 3600 - now.getMinutes() * 60 - now.getSeconds();
+            return seconds;
+        }
+
+        function updateNextUp() {
+            const nextUpElement = document.getElementById('nextUp');
+            const nextHour = (new Date().getHours() + 1) % 24;
+            const nextVideoTitle = `Animal Crossing Music ${nextHour % 12 === 0 ? 12 : nextHour % 12} AM`;
+            nextUpElement.textContent = `Next Up: ${nextVideoTitle}`;
         }
 
         // Load the YouTube API script
         const tag = document.createElement('script');
-        tag.src = `https://www.youtube.com/iframe_api?api_key=${apiKey}`;
+        tag.src = 'https://www.youtube.com/iframe_api';
         const firstScriptTag = document.getElementsByTagName('script')[0];
         firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
@@ -161,7 +171,16 @@
         window.onload = setVideo;
 
         // Update the video every hour
-        setInterval(setVideo, 60 * 60 * 1000);
+        setInterval(() => {
+            setVideo();
+            updateNextUp();
+        }, 60 * 60 * 1000);
+
+        function setVideo() {
+            player.loadVideoById(getVideoId());
+            resetCountdown();
+            updateNextUp();
+        }
     </script>
 </body>
 </html>
