@@ -22,7 +22,7 @@
             margin-top: 20px;
         }
 
-        #player {
+        iframe {
             width: 100%;
             height: 200px;
             border: 5px solid #ff69b4;
@@ -35,7 +35,7 @@
         }
 
         @media screen and (min-width: 600px) {
-            #player {
+            iframe {
                 height: 315px;
             }
         }
@@ -45,68 +45,133 @@
     <h1>🌸 ACNH Hourly Music 🌼</h1>
 
     <div id="videoContainer">
-        <div id="player"></div>
+        <iframe id="videoPlayer" frameborder="0" allowfullscreen allow="autoplay; encrypted-media"></iframe>
     </div>
 
     <div id="countdown">Time until next video: 00:00</div>
     <div id="nextUp">Next Up: Loading...</div>
 
     <script>
-        const videoUrls = [
-            "https://www.youtube.com/watch?v=vFggKHEsrjY", // 12 AM
-            "https://www.youtube.com/watch?v=E-GeGj9eD_Y", // 1 AM
-            "https://www.youtube.com/watch?v=xJMbtElUepc", // 2 AM
-            "https://www.youtube.com/watch?v=Bg_QdJgL-_U", // 3 AM
-            "https://www.youtube.com/watch?v=gRKuvzw6T6c", // 4 AM
-            "https://www.youtube.com/watch?v=u_VzHJW3HZc", // 5 AM
-            "https://www.youtube.com/watch?v=uG7nIelPQdo", // 6 AM
-            "https://www.youtube.com/watch?v=Zj-z7P-P0eU", // 7 AM
-            "https://www.youtube.com/watch?v=EAp1h3pHa_c", // 8 AM
-            "https://www.youtube.com/watch?v=A6wCdDn-HzA", // 9 AM
-            "https://www.youtube.com/watch?v=iprV6Y9Qj8I", // 10 AM
-            "https://www.youtube.com/watch?v=rHHJpZQe3M0", // 11 AM
-            "https://www.youtube.com/watch?v=zxkVYPjhdaM", // 12 PM
-            "https://www.youtube.com/watch?v=_1tBg0-8bFI", // 1 PM
-            "https://www.youtube.com/watch?v=uzSuYtVZ764", // 2 PM
-            "https://www.youtube.com/watch?v=2Dkm3D4ep8w", // 3 PM
-            "https://www.youtube.com/watch?v=TigX21NsbHI", // 4 PM
-            "https://www.youtube.com/watch?v=dlU6OR-ub70", // 5 PM
-            "https://www.youtube.com/watch?v=TNpieyL1Tt4", // 6 PM
-            "https://www.youtube.com/watch?v=iv7Xg2b1Sig", // 7 PM
-            "https://www.youtube.com/watch?v=xycWcS8G0EU", // 8 PM
-            "https://www.youtube.com/watch?v=LXhG5Lajj7I", // 9 PM
-            "https://www.youtube.com/watch?v=DrQSk1Pch8w", // 10 PM
-            "https://www.youtube.com/watch?v=a73Olh6uufc"  // 11 PM
-        ];
+        async function fetchVideoId(videoUrl) {
+            try {
+                const videoId = extractVideoId(videoUrl);
 
-        let player;
-
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('player', {
-                height: '200',
-                width: '100%',
-                videoId: getVideoId(),
-                events: {
-                    'onReady': onPlayerReady
+                if (videoId) {
+                    return videoId;
+                } else {
+                    console.error('Video ID Not Available');
+                    return 'Video ID Not Available';
                 }
-            });
+            } catch (error) {
+                console.error('Error fetching Video ID:', error);
+                return 'Error fetching Video ID';
+            }
         }
 
-        function onPlayerReady(event) {
-            event.target.playVideo();
-            setVideoSwitchInterval();
+        function extractVideoId(videoUrl) {
+            // Extract video ID from the YouTube URL
+            const urlParams = new URLSearchParams(new URL(videoUrl).search);
+            return urlParams.get('v');
         }
 
-        function setVideoSwitchInterval() {
-            setInterval(() => {
-                player.loadVideoById(getVideoId());
-            }, 60 * 60 * 1000);
-        }
-
-        function getVideoId() {
+        async function setVideo() {
             const currentDate = new Date();
             const currentHour = currentDate.getHours();
-            return videoUrls[currentHour % videoUrls.length].split('v=')[1];
+            const playlistSize = 24; // Assuming there are 24 videos in the playlist
+
+            // Array of YouTube video URLs corresponding to each hour
+            const videoUrls = [
+                'https://www.youtube.com/watch?v=vFggKHEsrjY',
+                'https://www.youtube.com/watch?v=E-GeGj9eD_Y',
+                'https://www.youtube.com/watch?v=xJMbtElUepc',
+                'https://www.youtube.com/watch?v=Bg_QdJgL-_U',
+                'https://www.youtube.com/watch?v=gRKuvzw6T6c',
+                'https://www.youtube.com/watch?v=u_VzHJW3HZc',
+                'https://www.youtube.com/watch?v=uG7nIelPQdo',
+                'https://www.youtube.com/watch?v=Zj-z7P-P0eU',
+                'https://www.youtube.com/watch?v=EAp1h3pHa_c',
+                'https://www.youtube.com/watch?v=A6wCdDn-HzA',
+                'https://www.youtube.com/watch?v=iprV6Y9Qj8I',
+                'https://www.youtube.com/watch?v=rHHJpZQe3M0',
+                'https://www.youtube.com/watch?v=zxkVYPjhdaM',
+                'https://www.youtube.com/watch?v=_1tBg0-8bFI',
+                'https://www.youtube.com/watch?v=uzSuYtVZ764',
+                'https://www.youtube.com/watch?v=2Dkm3D4ep8w',
+                'https://www.youtube.com/watch?v=TigX21NsbHI',
+                'https://www.youtube.com/watch?v=dlU6OR-ub70',
+                'https://www.youtube.com/watch?v=TNpieyL1Tt4',
+                'https://www.youtube.com/watch?v=iv7Xg2b1Sig',
+                'https://www.youtube.com/watch?v=xycWcS8G0EU',
+                'https://www.youtube.com/watch?v=LXhG5Lajj7I',
+                'https://www.youtube.com/watch?v=DrQSk1Pch8w',
+                'https://www.youtube.com/watch?v=a73Olh6uufc'
+            ];
+
+            // Get the video URL for the current hour
+            const currentVideoUrl = videoUrls[currentHour % playlistSize];
+
+            // Fetch the video ID based on the URL
+            const videoId = await fetchVideoId(currentVideoUrl);
+
+            if (videoId === 'Video ID Not Available') {
+                console.error('Error fetching Video ID. Using fallback video ID.');
+                // Use a fallback video ID or handle the error as needed
+            }
+
+            // Construct the video URL
+            const videoUrl = `https://www.youtube.com/embed/${videoId}`;
+
+            // Create a new iframe element
+            const newIframe = document.createElement('iframe');
+            newIframe.id = 'videoPlayer';
+            newIframe.frameBorder = '0';
+            newIframe.allowFullscreen = true;
+            newIframe.allow = 'autoplay; encrypted-media';
+            newIframe.src = `${videoUrl}?autoplay=1&mute=0&start=0&loop=1&controls=0&fs=0&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3`;
+
+            // Get the container div
+            const videoContainer = document.getElementById('videoContainer');
+
+            // Replace the old iframe with the new one
+            const oldIframe = document.getElementById('videoPlayer');
+            videoContainer.replaceChild(newIframe, oldIframe);
+
+            // Calculate the remaining time until the next hour
+            const remainingMinutes = 60 - currentDate.getMinutes();
+            const switchTimeMillis = remainingMinutes * 60 * 1000;
+
+            // Set a timeout to switch to the next video on the hour
+            setTimeout(() => {
+                // Clear the loop interval to ensure the next video starts fresh
+                clearInterval(loopInterval);
+                setVideo();
+            }, switchTimeMillis);
+
+            // Set an interval for looping the current video
+            const loopInterval = setInterval(() => {
+                newIframe.src += ''; // Forces a refresh, restarting the loop
+            }, switchTimeMillis);
+
+            // Update the countdown and next video information
+            updateCountdown(remainingMinutes * 60);
+            updateNextUp(currentHour + 1, videoUrls[(currentHour + 1) % playlistSize]);
+        }
+
+        function calculateLevenshteinDistance(a, b) {
+            const distanceMatrix = Array.from({ length: a.length + 1 }, (_, i) => Array.from({ length: b.length + 1 }, (_, j) => i || j));
+
+            for (let i = 1; i <= a.length; i++) {
+                for (let j = 1; j <= b.length; j++) {
+                    const indicator = a[i - 1] === b[j - 1] ? 0 : 1;
+                    distanceMatrix[i][j] = Math.min(
+                        distanceMatrix[i - 1][j] + 1, // deletion
+                        distanceMatrix[i][j - 1] + 1, // insertion
+                        distanceMatrix[i - 1][j - 1] + indicator // substitution
+                    );
+                }
+            }
+
+            return distanceMatrix[a.length][b.length];
         }
 
         function updateCountdown(seconds) {
@@ -136,32 +201,11 @@
             return hour % 12 || 12;
         }
 
-        // Load the YouTube API script
-        const tag = document.createElement('script');
-        tag.src = 'https://www.youtube.com/iframe_api';
-        const firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
         // Load the initial video on page load
         window.onload = setVideo;
 
         // Update the video every hour
         setInterval(setVideo, 60 * 60 * 1000);
-    </script>
-    <script>
-        // Additional script to handle autoplay
-        document.addEventListener('DOMContentLoaded', () => {
-            const playPromise = document.getElementById('player').play();
-
-            if (playPromise !== undefined) {
-                playPromise.then(_ => {
-                    // Autoplay started
-                }).catch(error => {
-                    // Autoplay was prevented
-                    console.error('Autoplay was prevented:', error);
-                });
-            }
-        });
     </script>
 </body>
 </html>
