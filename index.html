@@ -112,13 +112,19 @@
         }
 
         function setVideoSwitchInterval() {
-            countdownInterval = setInterval(() => {
+            setInterval(() => {
                 player.loadVideoById(getVideoId());
+                seekToStart();
                 resetCountdown();
+                updateNextUp();
             }, 60 * 60 * 1000);
 
             // Initial countdown
             updateCountdown(getSecondsUntilNextHour());
+        }
+
+        function seekToStart() {
+            player.seekTo(0);
         }
 
         function getVideoId() {
@@ -173,11 +179,11 @@
         // Update the video every hour
         setInterval(() => {
             setVideo();
-            updateNextUp();
         }, 60 * 60 * 1000);
 
         function setVideo() {
             player.loadVideoById(getVideoId());
+            seekToStart();
             resetCountdown();
             updateNextUp();
         }
