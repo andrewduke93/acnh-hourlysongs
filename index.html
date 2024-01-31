@@ -88,22 +88,14 @@
                 height: '200',
                 width: '100%',
                 videoId: getVideoId(),
-                // playerVars: {
-                //     'playlist': getVideoId(),
-                //     'loop': 1,
-                //     'autoplay': 1,
-                // },
+                playerVars: {
+                    'playlist': getVideoId(),
+                    'loop': 1,
+                },
                 events: {
-                    'onReady': onPlayerReady,
-                    'onStateChange': onPlayerStateChange
+                    'onReady': onPlayerReady
                 }
             });
-        }
-
-        function onPlayerStateChange(event) {
-            if(e.data === YT.PlayerState.ENDED) {
-                player.loadVideoById(getVideoId());
-            }
         }
 
         function onPlayerReady(event) {
