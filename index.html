@@ -113,8 +113,7 @@
 
         function setVideoSwitchInterval() {
             setInterval(() => {
-                player.loadVideoById(getVideoId());
-                seekToStart();
+                player.loadVideoById(getVideoId(), 0); // Start from the beginning
                 resetCountdown();
                 updateNextUp();
             }, 60 * 60 * 1000);
@@ -184,8 +183,7 @@
         }, 60 * 60 * 1000);
 
         function setVideo() {
-            player.loadVideoById(getVideoId());
-            seekToStart();
+            player.loadVideoById(getVideoId(), 0); // Start from the beginning
             resetCountdown();
             updateNextUp();
         }
