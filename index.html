@@ -22,12 +22,11 @@
             margin-top: 20px;
         }
 
-        #player {
+        iframe {
             width: 100%;
             height: 200px;
             border: 5px solid #ff69b4;
             border-radius: 10px;
-            cursor: pointer;
         }
 
         #countdown, #nextUp {
@@ -36,7 +35,7 @@
         }
 
         @media screen and (min-width: 600px) {
-            #player {
+            iframe {
                 height: 315px;
             }
         }
@@ -46,7 +45,7 @@
     <h1>🌸 ACNH Hourly Music 🌼</h1>
 
     <div id="videoContainer">
-        <div id="player"></div>
+        <iframe id="videoPlayer" frameborder="0" allowfullscreen allow="autoplay; encrypted-media" autoplay></iframe>
     </div>
 
     <div id="countdown">Time until next video: 00:00</div>
@@ -80,56 +79,47 @@
             "https://www.youtube.com/watch?v=a73Olh6uufc"  // 11 PM
         ];
 
-        let player;
-        let countdownInterval;
+        function setVideo() {
+            const currentDate = new Date();
+            const currentHour = currentDate.getHours();
+            const playlistSize = videoUrls.length;
 
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('player', {
-                height: '200',
-                width: '100%',
-                videoId: getVideoId(),
-                events: {
-                    'onReady': onPlayerReady
-                }
-            });
-        }
+            // Create a new iframe element
+            const newIframe = document.createElement('iframe');
+            newIframe.src = videoUrls[currentHour % playlistSize];
+            newIframe.allow = "autoplay; encrypted-media";
 
-        function onPlayerReady(event) {
-            event.target.addEventListener('click', () => {
-                const playPromise = player.play();
+            // Replace the old iframe with the new one
+            const videoContainer = document.getElementById('videoContainer');
+            const oldIframe = document.getElementById('videoPlayer');
+            videoContainer.replaceChild(newIframe, oldIframe);
 
-                if (playPromise !== undefined) {
-                    playPromise.then(_ => {
-                        // Autoplay started
-                    }).catch(error => {
-                        // Autoplay was prevented
-                        console.error('Autoplay was prevented:', error);
-                    });
-                }
-            });
+            // Calculate the remaining time until the next hour
+            const remainingMinutes = 60 - currentDate.getMinutes();
+            const switchTimeMillis = remainingMinutes * 60 * 1000;
 
-            setVideoSwitchInterval();
-        }
+            // Set a timeout to switch to the next video on the hour
+            setTimeout(() => {
+                // Clear the loop interval to ensure the next video starts fresh
+                clearInterval(loopInterval);
+                setVideo();
+            }, switchTimeMillis);
 
-        function setVideoSwitchInterval() {
-            countdownInterval = setInterval(() => {
-                player.loadVideoById(getVideoId());
-                resetCountdown();
-            }, 60 * 60 * 1000);
+            // Set an interval for looping the current video
+            const loopInterval = setInterval(() => {
+                newIframe.src += ''; // Forces a refresh, restarting the loop
+            }, switchTimeMillis);
 
-            // Initial countdown
-            updateCountdown(getSecondsUntilNextHour());
-        }
-
-        function getVideoId() {
-            return videoUrls[new Date().getHours() % videoUrls.length].split('v=')[1];
+            // Update the countdown and next video information
+            updateCountdown(remainingMinutes * 60);
+            updateNextUp((currentHour + 1) % playlistSize, videoUrls[(currentHour + 1) % playlistSize]);
         }
 
         function updateCountdown(seconds) {
             const countdownElement = document.getElementById('countdown');
 
             // Update countdown every second
-            countdownInterval = setInterval(() => {
+            const countdownInterval = setInterval(() => {
                 const minutes = Math.floor(seconds / 60);
                 const remainingSeconds = seconds % 60;
 
@@ -143,44 +133,20 @@
             }, 1000);
         }
 
-        function resetCountdown() {
-            clearInterval(countdownInterval);
-            updateCountdown(getSecondsUntilNextHour());
-        }
-
-        function getSecondsUntilNextHour() {
-            const now = new Date();
-            const seconds = 3600 - now.getMinutes() * 60 - now.getSeconds();
-            return seconds;
-        }
-
-        function updateNextUp() {
+        function updateNextUp(nextHour, nextVideoTitle) {
             const nextUpElement = document.getElementById('nextUp');
-            const nextHour = (new Date().getHours() + 1) % 24;
-            const nextVideoTitle = `Animal Crossing Music ${nextHour % 12 === 0 ? 12 : nextHour % 12} AM`;
-            nextUpElement.textContent = `Next Up: ${nextVideoTitle}`;
+            nextUpElement.textContent = `Next Up: ${formatHour(nextHour)} - ${nextVideoTitle}`;
         }
 
-        // Load the YouTube API script
-        const tag = document.createElement('script');
-        tag.src = 'https://www.youtube.com/iframe_api';
-        const firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        function formatHour(hour) {
+            return hour % 12 || 12;
+        }
 
         // Load the initial video on page load
         window.onload = setVideo;
 
         // Update the video every hour
-        setInterval(() => {
-            setVideo();
-            updateNextUp();
-        }, 60 * 60 * 1000);
-
-        function setVideo() {
-            player.loadVideoById(getVideoId());
-            resetCountdown();
-            updateNextUp();
-        }
+        setInterval(setVideo, 60 * 60 * 1000);
     </script>
 </body>
 </html>
