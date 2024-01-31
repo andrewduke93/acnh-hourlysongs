@@ -120,7 +120,7 @@
                 player.loadVideoById(getVideoId(), 0); // Start from the beginning
                 resetCountdown();
                 updateNextUp();
-            }, 60 * 60 * 1000);
+            }, getSecondsUntilNextHour() * 1000);
 
             // Initial countdown
             updateCountdown(getSecondsUntilNextHour());
@@ -181,10 +181,11 @@
         // Load the initial video on page load
         window.onload = setVideo;
 
+        // TODO: i think this is redundant, commenting for now
         // Update the video every hour
-        setInterval(() => {
-            setVideo();
-        }, 60 * 60 * 1000);
+        // setInterval(() => {
+        //     setVideo();
+        // }, 60 * 60 * 1000);
 
         function setVideo() {
             player.loadVideoById(getVideoId(), 0); // Start from the beginning
