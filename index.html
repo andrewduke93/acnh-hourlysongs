@@ -14,7 +14,7 @@
         .container {
             padding: 20px;
         }
-        .countdown {
+        .countdown, .now-playing, .up-next {
             margin-top: 20px;
             font-size: 20px;
             font-weight: bold;
@@ -27,6 +27,8 @@
 <body>
     <div class="container">
         <h1>ACNH Hourly Music</h1>
+        <div class="now-playing" id="nowPlaying">Now Playing: </div>
+        <div class="up-next" id="upNext">Up Next: </div>
         <div class="audio-player" id="audioPlayer"></div>
         <div class="countdown" id="countdown"></div>
     </div>
@@ -38,13 +40,61 @@
             "https://www.youtube.com/embed/xJMbtElUepc?autoplay=1&controls=0",
             "https://www.youtube.com/embed/Bg_QdJgL-_U?autoplay=1&controls=0",
             "https://www.youtube.com/embed/gRKuvzw6T6c?autoplay=1&controls=0",
-            // ... Add all other links here in the same format
+            "https://www.youtube.com/embed/u_VzHJW3HZc?autoplay=1&controls=0",
+            "https://www.youtube.com/embed/uG7nIelPQdo?autoplay=1&controls=0",
+            "https://www.youtube.com/embed/Zj-z7P-P0eU?autoplay=1&controls=0",
+            "https://www.youtube.com/embed/EAp1h3pHa_c?autoplay=1&controls=0",
+            "https://www.youtube.com/embed/A6wCdDn-HzA?autoplay=1&controls=0",
+            "https://www.youtube.com/embed/iprV6Y9Qj8I?autoplay=1&controls=0",
+            "https://www.youtube.com/embed/rHHJpZQe3M0?autoplay=1&controls=0",
+            "https://www.youtube.com/embed/zxkVYPjhdaM?autoplay=1&controls=0",
+            "https://www.youtube.com/embed/_1tBg0-8bFI?autoplay=1&controls=0",
+            "https://www.youtube.com/embed/uzSuYtVZ764?autoplay=1&controls=0",
+            "https://www.youtube.com/embed/2Dkm3D4ep8w?autoplay=1&controls=0",
+            "https://www.youtube.com/embed/TigX21NsbHI?autoplay=1&controls=0",
+            "https://www.youtube.com/embed/dlU6OR-ub70?autoplay=1&controls=0",
+            "https://www.youtube.com/embed/TNpieyL1Tt4?autoplay=1&controls=0",
+            "https://www.youtube.com/embed/iv7Xg2b1Sig?autoplay=1&controls=0",
+            "https://www.youtube.com/embed/xycWcS8G0EU?autoplay=1&controls=0",
+            "https://www.youtube.com/embed/LXhG5Lajj7I?autoplay=1&controls=0",
+            "https://www.youtube.com/embed/DrQSk1Pch8w?autoplay=1&controls=0",
             "https://www.youtube.com/embed/a73Olh6uufc?autoplay=1&controls=0"
+        ];
+
+        const trackTitles = [
+            "12 AM - Animal Crossing Music", 
+            "1 AM - Animal Crossing Music",
+            "2 AM - Animal Crossing Music",
+            "3 AM - Animal Crossing Music",
+            "4 AM - Animal Crossing Music",
+            "5 AM - Animal Crossing Music",
+            "6 AM - Animal Crossing Music",
+            "7 AM - Animal Crossing Music",
+            "8 AM - Animal Crossing Music",
+            "9 AM - Animal Crossing Music",
+            "10 AM - Animal Crossing Music",
+            "11 AM - Animal Crossing Music",
+            "12 PM - Animal Crossing Music",
+            "1 PM - Animal Crossing Music",
+            "2 PM - Animal Crossing Music",
+            "3 PM - Animal Crossing Music",
+            "4 PM - Animal Crossing Music",
+            "5 PM - Animal Crossing Music",
+            "6 PM - Animal Crossing Music",
+            "7 PM - Animal Crossing Music",
+            "8 PM - Animal Crossing Music",
+            "9 PM - Animal Crossing Music",
+            "10 PM - Animal Crossing Music",
+            "11 PM - Animal Crossing Music"
         ];
 
         function updateVideo() {
             const hour = new Date().getHours();
             const embedLink = youtubeLinks[hour];
+            const nextHour = hour === 23 ? 0 : hour + 1;
+
+            document.getElementById('nowPlaying').innerText = `Now Playing: ${trackTitles[hour]}`;
+            document.getElementById('upNext').innerText = `Up Next: ${trackTitles[nextHour]}`;
             document.getElementById('audioPlayer').innerHTML = `<iframe width="1" height="1" src="${embedLink}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
         }
 
@@ -57,7 +107,11 @@
             document.getElementById('countdown').innerText = `Next song in: ${minutes}m ${seconds}s`;
         }
 
-        updateVideo();
+        // User interaction required to start playback due to browser autoplay policies
+        document.body.addEventListener('click', function() {
+            updateVideo();
+        }, { once: true });
+
         setInterval(updateVideo, 1000 * 60 * 60); // Update video every hour
         setInterval(updateCountdown, 1000); // Update countdown every second
     </script>
