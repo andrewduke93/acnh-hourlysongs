@@ -22,20 +22,16 @@
             margin-top: 20px;
         }
 
-        #player {
+        .videoPlayer {
             width: 100%;
             height: 200px;
             border: 5px solid #ff69b4;
             border-radius: 10px;
-        }
-
-        #countdown, #nextUp {
-            font-size: 1.2em;
-            margin-top: 10px;
+            display: none;
         }
 
         @media screen and (min-width: 600px) {
-            #player {
+            .videoPlayer {
                 height: 315px;
             }
         }
@@ -45,119 +41,81 @@
     <h1>🌸 ACNH Hourly Music 🌼</h1>
 
     <div id="videoContainer">
-        <div id="player"></div>
+        <!-- Embed YouTube iframes for each hour -->
+        <iframe id="player0" class="videoPlayer" src="https://www.youtube.com/embed/vFggKHEsrjY" frameborder="0" allowfullscreen></iframe>
+        <iframe id="player1" class="videoPlayer" src="https://www.youtube.com/embed/E-GeGj9eD_Y" frameborder="0" allowfullscreen></iframe>
+        <iframe id="player2" class="videoPlayer" src="https://www.youtube.com/embed/xJMbtElUepc" frameborder="0" allowfullscreen></iframe>
+        <iframe id="player3" class="videoPlayer" src="https://www.youtube.com/embed/Bg_QdJgL-_U" frameborder="0" allowfullscreen></iframe>
+        <iframe id="player4" class="videoPlayer" src="https://www.youtube.com/embed/gRKuvzw6T6c" frameborder="0" allowfullscreen></iframe>
+        <iframe id="player5" class="videoPlayer" src="https://www.youtube.com/embed/u_VzHJW3HZc" frameborder="0" allowfullscreen></iframe>
+        <iframe id="player6" class="videoPlayer" src="https://www.youtube.com/embed/uG7nIelPQdo" frameborder="0" allowfullscreen></iframe>
+        <iframe id="player7" class="videoPlayer" src="https://www.youtube.com/embed/Zj-z7P-P0eU" frameborder="0" allowfullscreen></iframe>
+        <iframe id="player8" class="videoPlayer" src="https://www.youtube.com/embed/EAp1h3pHa_c" frameborder="0" allowfullscreen></iframe>
+        <iframe id="player9" class="videoPlayer" src="https://www.youtube.com/embed/A6wCdDn-HzA" frameborder="0" allowfullscreen></iframe>
+        <iframe id="player10" class="videoPlayer" src="https://www.youtube.com/embed/iprV6Y9Qj8I" frameborder="0" allowfullscreen></iframe>
+        <iframe id="player11" class="videoPlayer" src="https://www.youtube.com/embed/rHHJpZQe3M0" frameborder="0" allowfullscreen></iframe>
+        <iframe id="player12" class="videoPlayer" src="https://www.youtube.com/embed/zxkVYPjhdaM" frameborder="0" allowfullscreen></iframe>
+        <iframe id="player13" class="videoPlayer" src="https://www.youtube.com/embed/_1tBg0-8bFI" frameborder="0" allowfullscreen></iframe>
+        <iframe id="player14" class="videoPlayer" src="https://www.youtube.com/embed/uzSuYtVZ764" frameborder="0" allowfullscreen></iframe>
+        <iframe id="player15" class="videoPlayer" src="https://www.youtube.com/embed/2Dkm3D4ep8w" frameborder="0" allowfullscreen></iframe>
+        <iframe id="player16" class="videoPlayer" src="https://www.youtube.com/embed/TigX21NsbHI" frameborder="0" allowfullscreen></iframe>
+        <iframe id="player17" class="videoPlayer" src="https://www.youtube.com/embed/dlU6OR-ub70" frameborder="0" allowfullscreen></iframe>
+        <iframe id="player18" class="videoPlayer" src="https://www.youtube.com/embed/TNpieyL1Tt4" frameborder="0" allowfullscreen></iframe>
+        <iframe id="player19" class="videoPlayer" src="https://www.youtube.com/embed/iv7Xg2b1Sig" frameborder="0" allowfullscreen></iframe>
+        <iframe id="player20" class="videoPlayer" src="https://www.youtube.com/embed/xycWcS8G0EU" frameborder="0" allowfullscreen></iframe>
+        <iframe id="player21" class="videoPlayer" src="https://www.youtube.com/embed/LXhG5Lajj7I" frameborder="0" allowfullscreen></iframe>
+        <iframe id="player22" class="videoPlayer" src="https://www.youtube.com/embed/DrQSk1Pch8w" frameborder="0" allowfullscreen></iframe>
+        <iframe id="player23" class="videoPlayer" src="https://www.youtube.com/embed/a73Olh6uufc" frameborder="0" allowfullscreen></iframe>
     </div>
 
     <div id="countdown">Time until next video: 00:00</div>
     <div id="nextUp">Next Up: Loading...</div>
 
     <script>
-        const videoUrls = [
-            "https://www.youtube.com/watch?v=vFggKHEsrjY", // 12 AM
-            "https://www.youtube.com/watch?v=E-GeGj9eD_Y", // 1 AM
-            "https://www.youtube.com/watch?v=xJMbtElUepc", // 2 AM
-            "https://www.youtube.com/watch?v=Bg_QdJgL-_U", // 3 AM
-            "https://www.youtube.com/watch?v=gRKuvzw6T6c", // 4 AM
-            "https://www.youtube.com/watch?v=u_VzHJW3HZc", // 5 AM
-            "https://www.youtube.com/watch?v=uG7nIelPQdo", // 6 AM
-            "https://www.youtube.com/watch?v=Zj-z7P-P0eU", // 7 AM
-            "https://www.youtube.com/watch?v=EAp1h3pHa_c", // 8 AM
-            "https://www.youtube.com/watch?v=A6wCdDn-HzA", // 9 AM
-            "https://www.youtube.com/watch?v=iprV6Y9Qj8I", // 10 AM
-            "https://www.youtube.com/watch?v=rHHJpZQe3M0", // 11 AM
-            "https://www.youtube.com/watch?v=zxkVYPjhdaM", // 12 PM
-            "https://www.youtube.com/watch?v=_1tBg0-8bFI", // 1 PM
-            "https://www.youtube.com/watch?v=uzSuYtVZ764", // 2 PM
-            "https://www.youtube.com/watch?v=2Dkm3D4ep8w", // 3 PM
-            "https://www.youtube.com/watch?v=TigX21NsbHI", // 4 PM
-            "https://www.youtube.com/watch?v=dlU6OR-ub70", // 5 PM
-            "https://www.youtube.com/watch?v=TNpieyL1Tt4", // 6 PM
-            "https://www.youtube.com/watch?v=iv7Xg2b1Sig", // 7 PM
-            "https://www.youtube.com/watch?v=xycWcS8G0EU", // 8 PM
-            "https://www.youtube.com/watch?v=LXhG5Lajj7I", // 9 PM
-            "https://www.youtube.com/watch?v=DrQSk1Pch8w", // 10 PM
-            "https://www.youtube.com/watch?v=a73Olh6uufc"  // 11 PM
-        ];
-
-        const videoTitles = [
-            "Animal Crossing Music 12 AM", 
-            "Animal Crossing Music 1 AM",
-            "Animal Crossing Music 2 AM",
-            "Animal Crossing Music 3 AM",
-            "Animal Crossing Music 4 AM",
-            "Animal Crossing Music 5 AM",
-            "Animal Crossing Music 6 AM",
-            "Animal Crossing Music 7 AM",
-            "Animal Crossing Music 8 AM",
-            "Animal Crossing Music 9 AM",
-            "Animal Crossing Music 10 AM",
-            "Animal Crossing Music 11 AM",
-            "Animal Crossing Music 12 PM",
-            "Animal Crossing Music 1 PM",
-            "Animal Crossing Music 2 PM",
-            "Animal Crossing Music 3 PM",
-            "Animal Crossing Music 4 PM",
-            "Animal Crossing Music 5 PM",
-            "Animal Crossing Music 6 PM",
-            "Animal Crossing Music 7 PM",
-            "Animal Crossing Music 8 PM",
-            "Animal Crossing Music 9 PM",
-            "Animal Crossing Music 10 PM",
-            "Animal Crossing Music 11 PM"
-        ];
-
-        let player;
         let countdownInterval;
+        let currentHour = new Date().getHours();
 
-        function newPlayer(videoId) {
-            if (player) { player.destroy(); }
-            player = new YT.Player('player', {
-                height: '200',
-                width: '100%',
-                videoId: videoId,
-                playerVars: {
-                    'autoplay': 1,
-                    'playlist': videoId,
-                    'loop': 1,
-                    'start': 0,
-                    'controls': 1,
-                    'mute': 1 // Start muted
-                },
-                events: {
-                    'onReady': onPlayerReady,
-                    'onStateChange': onPlayerStateChange
-                }
+        function showCurrentVideo() {
+            document.querySelectorAll('.videoPlayer').forEach(iframe => {
+                iframe.style.display = 'none';
             });
+
+            let currentVideo = document.getElementById(`player${currentHour}`);
+            currentVideo.style.display = 'block';
+            currentVideo.src += "&autoplay=1"; // Trigger autoplay
         }
 
-        function onYouTubeIframeAPIReady() {
-            newPlayer(getVideoId());
-            updateNextUp();
-            refreshOnHour();
-        }
+        function updateNextUp() {
+            const videoTitles = [
+                "Animal Crossing Music 12 AM", 
+                "Animal Crossing Music 1 AM",
+                "Animal Crossing Music 2 AM",
+                "Animal Crossing Music 3 AM",
+                "Animal Crossing Music 4 AM",
+                "Animal Crossing Music 5 AM",
+                "Animal Crossing Music 6 AM",
+                "Animal Crossing Music 7 AM",
+                "Animal Crossing Music 8 AM",
+                "Animal Crossing Music 9 AM",
+                "Animal Crossing Music 10 AM",
+                "Animal Crossing Music 11 AM",
+                "Animal Crossing Music 12 PM",
+                "Animal Crossing Music 1 PM",
+                "Animal Crossing Music 2 PM",
+                "Animal Crossing Music 3 PM",
+                "Animal Crossing Music 4 PM",
+                "Animal Crossing Music 5 PM",
+                "Animal Crossing Music 6 PM",
+                "Animal Crossing Music 7 PM",
+                "Animal Crossing Music 8 PM",
+                "Animal Crossing Music 9 PM",
+                "Animal Crossing Music 10 PM",
+                "Animal Crossing Music 11 PM"
+            ];
 
-        function onPlayerReady(event) {
-            event.target.playVideo();
-            setTimeout(() => {
-                player.unMute();
-            }, 1000); // Unmute after 1 second
-            setCountdown();
-        }
-
-        function onPlayerStateChange(event) {
-            if (event.data === YT.PlayerState.ENDED) {
-                switchToNextVideo();
-            }
-        }
-
-        function switchToNextVideo() {
-            newPlayer(getVideoId());
-            setCountdown();
-            updateNextUp();
-        }
-
-        function getVideoId() {
-            return videoUrls[new Date().getHours() % videoUrls.length].split('v=')[1];
+            const nextHour = (currentHour + 1) % 24;
+            const nextUpElement = document.getElementById('nextUp');
+            nextUpElement.textContent = `Next Up: ${videoTitles[nextHour]}`;
         }
 
         function setCountdown() {
@@ -171,6 +129,10 @@
 
                 if (seconds <= 0) {
                     clearInterval(countdownInterval);
+                    currentHour = (currentHour + 1) % 24;
+                    showCurrentVideo();
+                    updateNextUp();
+                    setCountdown();
                 }
             }, 1000);
         }
@@ -187,24 +149,11 @@
             return 3600 - now.getMinutes() * 60 - now.getSeconds();
         }
 
-        function updateNextUp() {
-            const nextUpElement = document.getElementById('nextUp');
-            const nextHour = (new Date().getHours() + 1) % 24;
-            nextUpElement.textContent = `Next Up: ${videoTitles[nextHour]}`;
-        }
-
-        function refreshOnHour() {
-            let secondsUntilNextHour = getSecondsUntilNextHour();
-            setTimeout(() => {
-                location.reload();
-            }, secondsUntilNextHour * 1000);
-        }
-
-        // Load the YouTube API script
-        const tag = document.createElement('script');
-        tag.src = 'https://www.youtube.com/iframe_api';
-        const firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        window.onload = function() {
+            showCurrentVideo();
+            updateNextUp();
+            setCountdown();
+        };
     </script>
 </body>
 </html>
