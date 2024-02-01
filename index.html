@@ -83,19 +83,23 @@
         let player;
         let countdownInterval;
 
-        function onYouTubeIframeAPIReady() {
+        function newPlayer(videoid) {
             player = new YT.Player('player', {
                 height: '200',
                 width: '100%',
-                videoId: getVideoId(),
+                videoId: videoid,
                 playerVars: {
-                    'playlist': getVideoId(),
+                    'playlist': videoid,
                     'loop': 1,
                 },
                 events: {
                     'onReady': onPlayerReady
                 }
             });
+        }
+
+        function onYouTubeIframeAPIReady() {
+            player = newPlayer(getVideoId(), 0);
         }
 
         function onPlayerReady(event) {
@@ -117,7 +121,9 @@
 
         function setVideoSwitchInterval() {
             setInterval(() => {
-                player.loadVideoById(getVideoId(), 0); // Start from the beginning
+                //player.loadVideoById(getVideoId(), 0); // Start from the beginning
+                if(player){player.destroy();}
+                player = newPlayer(getVideoId(), 0);
                 resetCountdown();
                 updateNextUp();
             }, getSecondsUntilNextHour() * 1000);
@@ -179,7 +185,7 @@
         firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
         // Load the initial video on page load
-        window.onload = setVideo;
+        // window.onload = setVideo;
 
         // TODO: i think this is redundant, commenting for now
         // Update the video every hour
@@ -187,11 +193,11 @@
         //     setVideo();
         // }, 60 * 60 * 1000);
 
-        function setVideo() {
-            player.loadVideoById(getVideoId(), 0); // Start from the beginning
-            resetCountdown();
-            updateNextUp();
-        }
+        // function setVideo() {
+        //     player.loadVideoById(getVideoId(), 0); // Start from the beginning
+        //     resetCountdown();
+        //     updateNextUp();
+        // }
     </script>
 </body>
 </html>
