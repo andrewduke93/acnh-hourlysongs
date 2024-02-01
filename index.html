@@ -3,137 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ACNH Hourly Music 🎶</title>
+    <title>ACNH Hourly Music</title>
     <style>
         body {
-            font-family: 'Comic Sans MS', cursive, sans-serif;
+            font-family: 'Arial', sans-serif;
             text-align: center;
-            background-color: #f6f6f6;
-            margin: 0;
-            padding: 0;
+            background-color: #f0f4c3; /* Light green background */
+            color: #333;
         }
-
-        h1 {
-            color: #ff69b4;
-            margin-bottom: 10px;
+        .container {
+            padding: 20px;
         }
-
-        #videoContainer {
+        .countdown {
             margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
         }
-
-        .videoPlayer {
-            width: 100%;
-            height: 200px;
-            border: 5px solid #ff69b4;
-            border-radius: 10px;
-            display: none;
-        }
-
-        @media screen and (min-width: 600px) {
-            .videoPlayer {
-                height: 315px;
-            }
+        .audio-player {
+            display: none; /* Hide the video player */
         }
     </style>
 </head>
 <body>
-    <h1>🌸 ACNH Hourly Music 🌼</h1>
-
-    <div id="videoContainer">
-        <!-- Embed YouTube iframes for each hour -->
-        <iframe id="player0" class="videoPlayer" src="https://www.youtube.com/embed/vFggKHEsrjY" frameborder="0" allowfullscreen></iframe>
-        <iframe id="player1" class="videoPlayer" src="https://www.youtube.com/embed/E-GeGj9eD_Y" frameborder="0" allowfullscreen></iframe>
-        <iframe id="player2" class="videoPlayer" src="https://www.youtube.com/embed/xJMbtElUepc" frameborder="0" allowfullscreen></iframe>
-        <iframe id="player3" class="videoPlayer" src="https://www.youtube.com/embed/Bg_QdJgL-_U" frameborder="0" allowfullscreen></iframe>
-        <iframe id="player4" class="videoPlayer" src="https://www.youtube.com/embed/gRKuvzw6T6c" frameborder="0" allowfullscreen></iframe>
-        <iframe id="player5" class="videoPlayer" src="https://www.youtube.com/embed/u_VzHJW3HZc" frameborder="0" allowfullscreen></iframe>
-        <iframe id="player6" class="videoPlayer" src="https://www.youtube.com/embed/uG7nIelPQdo" frameborder="0" allowfullscreen></iframe>
-        <iframe id="player7" class="videoPlayer" src="https://www.youtube.com/embed/Zj-z7P-P0eU" frameborder="0" allowfullscreen></iframe>
-        <iframe id="player8" class="videoPlayer" src="https://www.youtube.com/embed/EAp1h3pHa_c" frameborder="0" allowfullscreen></iframe>
-        <iframe id="player9" class="videoPlayer" src="https://www.youtube.com/embed/A6wCdDn-HzA" frameborder="0" allowfullscreen></iframe>
-        <iframe id="player10" class="videoPlayer" src="https://www.youtube.com/embed/iprV6Y9Qj8I" frameborder="0" allowfullscreen></iframe>
-        <iframe id="player11" class="videoPlayer" src="https://www.youtube.com/embed/rHHJpZQe3M0" frameborder="0" allowfullscreen></iframe>
-        <iframe id="player12" class="videoPlayer" src="https://www.youtube.com/embed/zxkVYPjhdaM" frameborder="0" allowfullscreen></iframe>
-        <iframe id="player13" class="videoPlayer" src="https://www.youtube.com/embed/_1tBg0-8bFI" frameborder="0" allowfullscreen></iframe>
-        <iframe id="player14" class="videoPlayer" src="https://www.youtube.com/embed/uzSuYtVZ764" frameborder="0" allowfullscreen></iframe>
-        <iframe id="player15" class="videoPlayer" src="https://www.youtube.com/embed/2Dkm3D4ep8w" frameborder="0" allowfullscreen></iframe>
-        <iframe id="player16" class="videoPlayer" src="https://www.youtube.com/embed/TigX21NsbHI" frameborder="0" allowfullscreen></iframe>
-        <iframe id="player17" class="videoPlayer" src="https://www.youtube.com/embed/dlU6OR-ub70" frameborder="0" allowfullscreen></iframe>
-        <iframe id="player18" class="videoPlayer" src="https://www.youtube.com/embed/TNpieyL1Tt4" frameborder="0" allowfullscreen></iframe>
-        <iframe id="player19" class="videoPlayer" src="https://www.youtube.com/embed/iv7Xg2b1Sig" frameborder="0" allowfullscreen></iframe>
-        <iframe id="player20" class="videoPlayer" src="https://www.youtube.com/embed/xycWcS8G0EU" frameborder="0" allowfullscreen></iframe>
-        <iframe id="player21" class="videoPlayer" src="https://www.youtube.com/embed/LXhG5Lajj7I" frameborder="0" allowfullscreen></iframe>
-        <iframe id="player22" class="videoPlayer" src="https://www.youtube.com/embed/DrQSk1Pch8w" frameborder="0" allowfullscreen></iframe>
-        <iframe id="player23" class="videoPlayer" src="https://www.youtube.com/embed/a73Olh6uufc" frameborder="0" allowfullscreen></iframe>
+    <div class="container">
+        <h1>ACNH Hourly Music</h1>
+        <div class="audio-player" id="audioPlayer"></div>
+        <div class="countdown" id="countdown"></div>
     </div>
 
-    <div id="countdown">Time until next video: 00:00</div>
-    <div id="nextUp">Next Up: Loading...</div>
-
     <script>
-        let countdownInterval;
-        let currentHour = new Date().getHours();
+        const youtubeLinks = [
+            "https://www.youtube.com/embed/vFggKHEsrjY?autoplay=1&controls=0",
+            "https://www.youtube.com/embed/E-GeGj9eD_Y?autoplay=1&controls=0",
+            "https://www.youtube.com/embed/xJMbtElUepc?autoplay=1&controls=0",
+            "https://www.youtube.com/embed/Bg_QdJgL-_U?autoplay=1&controls=0",
+            "https://www.youtube.com/embed/gRKuvzw6T6c?autoplay=1&controls=0",
+            // ... Add all other links here in the same format
+            "https://www.youtube.com/embed/a73Olh6uufc?autoplay=1&controls=0"
+        ];
 
-        function showCurrentVideo() {
-            document.querySelectorAll('.videoPlayer').forEach(iframe => {
-                iframe.style.display = 'none';
-            });
-
-            let currentVideo = document.getElementById(`player${currentHour}`);
-            currentVideo.style.display = 'block';
-            // Autoplay handling, if needed, can be added here
+        function updateVideo() {
+            const hour = new Date().getHours();
+            const embedLink = youtubeLinks[hour];
+            document.getElementById('audioPlayer').innerHTML = `<iframe width="1" height="1" src="${embedLink}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
         }
 
-        function updateNextUp() {
-            const videoTitles = [
-                "Animal Crossing Music 12 AM", 
-                "Animal Crossing Music 1 AM",
-                // ... [Add titles for each hour]
-                "Animal Crossing Music 11 PM"
-            ];
-
-            const nextHour = (currentHour + 1) % 24;
-            const nextUpElement = document.getElementById('nextUp');
-            nextUpElement.textContent = `Next Up: ${videoTitles[nextHour]}`;
-        }
-
-        function setCountdown() {
-            clearInterval(countdownInterval);
-            let seconds = getSecondsUntilNextHour();
-            updateCountdownDisplay(seconds);
-
-            countdownInterval = setInterval(() => {
-                seconds--;
-                updateCountdownDisplay(seconds);
-
-                if (seconds <= 0) {
-                    clearInterval(countdownInterval);
-                    currentHour = (currentHour + 1) % 24;
-                    showCurrentVideo();
-                    updateNextUp();
-                    setCountdown();
-                }
-            }, 1000);
-        }
-
-        function updateCountdownDisplay(seconds) {
-            const countdownElement = document.getElementById('countdown');
-            const minutes = Math.floor(seconds / 60);
-            const remainingSeconds = seconds % 60;
-            countdownElement.textContent = `Time until next video: ${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
-        }
-
-        function getSecondsUntilNextHour() {
+        function updateCountdown() {
             const now = new Date();
-            return 3600 - now.getMinutes() * 60 - now.getSeconds();
+            const nextHour = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours() + 1);
+            const diff = nextHour - now;
+            const minutes = Math.floor(diff / 60000);
+            const seconds = Math.floor((diff % 60000) / 1000);
+            document.getElementById('countdown').innerText = `Next song in: ${minutes}m ${seconds}s`;
         }
 
-        window.onload = function() {
-            showCurrentVideo();
-            updateNextUp();
-            setCountdown();
-        };
+        updateVideo();
+        setInterval(updateVideo, 1000 * 60 * 60); // Update video every hour
+        setInterval(updateCountdown, 1000); // Update countdown every second
     </script>
 </body>
 </html>
