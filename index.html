@@ -3,146 +3,201 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌸 ACNH Hourly Music 🎵</title>
+    <title>ACNH Hourly Music 🎶</title>
     <style>
         body {
-            font-family: 'Comic Sans MS', cursive, sans-serif; /* Comic Sans font */
+            font-family: 'Comic Sans MS', cursive, sans-serif;
             text-align: center;
-            background-color: #FFC0CB; /* Light pink background */
-            color: #333;
-            padding: 20px;
+            background-color: #f6f6f6;
+            margin: 0;
+            padding: 0;
         }
-        .container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin: auto;
-            max-width: 90%; /* Adjusted for better adaptability */
+
+        h1 {
+            color: #ff69b4;
+            margin-bottom: 10px;
         }
-        .countdown, .now-playing, .up-next, .click-prompt {
+
+        #videoContainer {
             margin-top: 20px;
-            font-size: 18px; /* Smaller font size */
-            font-weight: bold;
         }
-        .audio-player {
-            /* Keep the video player hidden with a width and height of "1" */
+
+        #player {
+            width: 100%;
+            height: 200px;
+            border: 5px solid #ff69b4;
+            border-radius: 10px;
+            cursor: pointer;
         }
-        .click-prompt {
-            font-size: 20px; /* Slightly smaller font size */
-            color: #ff69b4; /* Bright pink color */
+
+        #countdown, #nextUp {
+            font-size: 1.2em;
+            margin-top: 10px;
         }
-        @media screen and (max-width: 768px) {
-            /* Adjustments for smaller screens (e.g., mobile) */
-            .container {
-                max-width: 95%; /* Increase adaptability */
-                padding: 10px;
-            }
-            .countdown, .now-playing, .up-next, .click-prompt {
-                font-size: 16px; /* Further reduce font size for mobile */
+
+        @media screen and (min-width: 600px) {
+            #player {
+                height: 315px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🎵🌸 ACNH Hourly Music 🌸🎵</h1>
-        <div class="now-playing" id="nowPlaying">Now Playing: </div>
-        <div class="up-next" id="upNext">Up Next: </div>
-        <div class="audio-player" id="audioPlayer">
-            <iframe width="1" height="1" src="https://www.youtube.com/embed/vFggKHEsrjY?controls=1&loop=1&playlist=vFggKHEsrjY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
-        <div class="countdown" id="countdown"></div>
-        <div class="click-prompt">Click anywhere to begin 🎶</div>
+    <h1>🌸 ACNH Hourly Music 🌼</h1>
+
+    <div id="videoContainer">
+        <div id="player"></div>
     </div>
 
+    <div id="countdown">Time until next video: 00:00</div>
+    <div id="nextUp">Next Up: Loading...</div>
+
     <script>
-        const youtubeLinks = [
-            "https://www.youtube.com/embed/vFggKHEsrjY?controls=1&loop=1&playlist=vFggKHEsrjY",
-            "https://www.youtube.com/embed/E-GeGj9eD_Y?controls=1&loop=1&playlist=E-GeGj9eD_Y",
-            "https://www.youtube.com/embed/xJMbtElUepc?controls=1&loop=1&playlist=xJMbtElUepc",
-            "https://www.youtube.com/embed/Bg_QdJgL-_U?controls=1&loop=1&playlist=Bg_QdJgL-_U",
-            "https://www.youtube.com/embed/gRKuvzw6T6c?controls=1&loop=1&playlist=gRKuvzw6T6c",
-            "https://www.youtube.com/embed/u_VzHJW3HZc?controls=1&loop=1&playlist=u_VzHJW3HZc",
-            "https://www.youtube.com/embed/uG7nIelPQdo?controls=1&loop=1&playlist=uG7nIelPQdo",
-            "https://www.youtube.com/embed/Zj-z7P-P0eU?controls=1&loop=1&playlist=Zj-z7P-P0eU",
-            "https://www.youtube.com/embed/EAp1h3pHa_c?controls=1&loop=1&playlist=EAp1h3pHa_c",
-            "https://www.youtube.com/embed/A6wCdDn-HzA?controls=1&loop=1&playlist=A6wCdDn-HzA",
-            "https://www.youtube.com/embed/iprV6Y9Qj8I?controls=1&loop=1&playlist=iprV6Y9Qj8I",
-            "https://www.youtube.com/embed/rHHJpZQe3M0?controls=1&loop=1&playlist=rHHJpZQe3M0",
-            "https://www.youtube.com/embed/zxkVYPjhdaM?controls=1&loop=1&playlist=zxkVYPjhdaM",
-            "https://www.youtube.com/embed/_1tBg0-8bFI?controls=1&loop=1&playlist=_1tBg0-8bFI",
-            "https://www.youtube.com/embed/uzSuYtVZ764?controls=1&loop=1&playlist=uzSuYtVZ764",
-            "https://www.youtube.com/embed/2Dkm3D4ep8w?controls=1&loop=1&playlist=2Dkm3D4ep8w",
-            "https://www.youtube.com/embed/TigX21NsbHI?controls=1&loop=1&playlist=TigX21NsbHI",
-            "https://www.youtube.com/embed/dlU6OR-ub70?controls=1&loop=1&playlist=dlU6OR-ub70",
-            "https://www.youtube.com/embed/TNpieyL1Tt4?controls=1&loop=1&playlist=TNpieyL1Tt4",
-            "https://www.youtube.com/embed/iv7Xg2b1Sig?controls=1&loop=1&playlist=iv7Xg2b1Sig",
-            "https://www.youtube.com/embed/xycWcS8G0EU?controls=1&loop=1&playlist=xycWcS8G0EU",
-            "https://www.youtube.com/embed/LXhG5Lajj7I?controls=1&loop=1&playlist=LXhG5Lajj7I",
-            "https://www.youtube.com/embed/DrQSk1Pch8w?controls=1&loop=1&playlist=DrQSk1Pch8w",
-            "https://www.youtube.com/embed/a73Olh6uufc?controls=1&loop=1&playlist=a73Olh6uufc"
+        const videoUrls = [
+            "https://www.youtube.com/watch?v=vFggKHEsrjY", // 12 AM
+            "https://www.youtube.com/watch?v=E-GeGj9eD_Y", // 1 AM
+            "https://www.youtube.com/watch?v=xJMbtElUepc", // 2 AM
+            "https://www.youtube.com/watch?v=Bg_QdJgL-_U", // 3 AM
+            "https://www.youtube.com/watch?v=gRKuvzw6T6c", // 4 AM
+            "https://www.youtube.com/watch?v=u_VzHJW3HZc", // 5 AM
+            "https://www.youtube.com/watch?v=uG7nIelPQdo", // 6 AM
+            "https://www.youtube.com/watch?v=Zj-z7P-P0eU", // 7 AM
+            "https://www.youtube.com/watch?v=EAp1h3pHa_c", // 8 AM
+            "https://www.youtube.com/watch?v=A6wCdDn-HzA", // 9 AM
+            "https://www.youtube.com/watch?v=iprV6Y9Qj8I", // 10 AM
+            "https://www.youtube.com/watch?v=rHHJpZQe3M0", // 11 AM
+            "https://www.youtube.com/watch?v=zxkVYPjhdaM", // 12 PM
+            "https://www.youtube.com/watch?v=_1tBg0-8bFI", // 1 PM
+            "https://www.youtube.com/watch?v=uzSuYtVZ764", // 2 PM
+            "https://www.youtube.com/watch?v=2Dkm3D4ep8w", // 3 PM
+            "https://www.youtube.com/watch?v=TigX21NsbHI", // 4 PM
+            "https://www.youtube.com/watch?v=dlU6OR-ub70", // 5 PM
+            "https://www.youtube.com/watch?v=TNpieyL1Tt4", // 6 PM
+            "https://www.youtube.com/watch?v=iv7Xg2b1Sig", // 7 PM
+            "https://www.youtube.com/watch?v=xycWcS8G0EU", // 8 PM
+            "https://www.youtube.com/watch?v=LXhG5Lajj7I", // 9 PM
+            "https://www.youtube.com/watch?v=DrQSk1Pch8w", // 10 PM
+            "https://www.youtube.com/watch?v=a73Olh6uufc"  // 11 PM
         ];
 
-        const trackTitles = [
-            "12 AM",
-            "1 AM",
-            "2 AM",
-            "3 AM",
-            "4 AM",
-            "5 AM",
-            "6 AM",
-            "7 AM",
-            "8 AM",
-            "9 AM",
-            "10 AM",
-            "11 AM",
-            "12 PM",
-            "1 PM",
-            "2 PM",
-            "3 PM",
-            "4 PM",
-            "5 PM",
-            "6 PM",
-            "7 PM",
-            "8 PM",
-            "9 PM",
-            "10 PM",
-            "11 PM"
-        ];
+        let player;
+        let countdownInterval;
 
-        let currentHour = -1;
-
-        function updateVideo() {
-            const hour = new Date().getHours();
-            if (currentHour !== hour) {
-                currentHour = hour;
-                const embedLink = youtubeLinks[hour];
-                const nextHour = hour === 23 ? 0 : hour + 1;
-
-                document.getElementById('nowPlaying').innerText = `Now Playing: ${trackTitles[hour]}`;
-                document.getElementById('upNext').innerText = `Up Next: ${trackTitles[nextHour]}`;
-                document.getElementById('audioPlayer').innerHTML = `<iframe width="1" height="1" src="${embedLink}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-            }
+        function newPlayer(videoid) {
+            if(player){player.destroy();}
+            player = new YT.Player('player', {
+                height: '200',
+                width: '100%',
+                videoId: videoid,
+                playerVars: {
+                    'playlist': videoid,
+                    'loop': 1,
+                    'start': 0,
+                },
+                events: {
+                    'onReady': onPlayerReady
+                }
+            });
         }
 
-        function updateCountdown() {
+        function onYouTubeIframeAPIReady() {
+            player = newPlayer(getVideoId());
+        }
+
+        function onPlayerReady(event) {
+            event.target.addEventListener('click', () => {
+                const playPromise = player.play();
+
+                if (playPromise !== undefined) {
+                    playPromise.then(_ => {
+                        // Autoplay started
+                    }).catch(error => {
+                        // Autoplay was prevented
+                        console.error('Autoplay was prevented:', error);
+                    });
+                }
+            });
+
+            setVideoSwitchInterval();
+        }
+
+        function setVideoSwitchInterval() {
+            setInterval(() => {
+                player = newPlayer(getVideoId());
+                resetCountdown();
+                updateNextUp();
+            }, getSecondsUntilNextHour() * 1000);
+
+            // Initial countdown
+            updateCountdown(getSecondsUntilNextHour());
+        }
+
+        function seekToStart() {
+            player.seekTo(0);
+        }
+
+        function getVideoId() {
+            return videoUrls[new Date().getHours() % videoUrls.length].split('v=')[1];
+        }
+
+        function updateCountdown(seconds) {
+            const countdownElement = document.getElementById('countdown');
+
+            // Update countdown every second
+            countdownInterval = setInterval(() => {
+                const minutes = Math.floor(seconds / 60);
+                const remainingSeconds = seconds % 60;
+
+                countdownElement.textContent = `Time until next video: ${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+
+                if (seconds <= 0) {
+                    clearInterval(countdownInterval);
+                }
+
+                seconds--;
+            }, 1000);
+        }
+
+        function resetCountdown() {
+            clearInterval(countdownInterval);
+            updateCountdown(getSecondsUntilNextHour());
+        }
+
+        function getSecondsUntilNextHour() {
             const now = new Date();
-            const nextHour = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours() + 1);
-            const diff = nextHour - now;
-            const minutes = Math.floor(diff / 60000);
-            const seconds = Math.floor((diff % 60000) / 1000);
-            document.getElementById('countdown').innerText = `Next song in: ${minutes}m ${seconds}s`;
+            const seconds = 3600 - now.getMinutes() * 60 - now.getSeconds();
+            return seconds;
         }
 
-        // User interaction required to start playback due to browser autoplay policies
-        document.body.addEventListener('click', function() {
-            document.querySelector('.click-prompt').style.display = 'none';
-            updateVideo();
-        }, { once: true });
+        function updateNextUp() {
+            const nextUpElement = document.getElementById('nextUp');
+            const currentHour = new Date().getHours();
+            const nextHour = (currentHour + 1) % 24;
+            const amPm = nextHour < 12 ? 'AM' : 'PM';
+            const nextVideoTitle = `Animal Crossing Music ${nextHour % 12 === 0 ? 12 : nextHour % 12} ${amPm}`;
+            nextUpElement.textContent = `Next Up: ${nextVideoTitle}`;
+        }
 
-        setInterval(updateVideo, 1000); // Check every second for hour change
-        setInterval(updateCountdown, 1000); // Update countdown every second
+        // Load the YouTube API script
+        const tag = document.createElement('script');
+        tag.src = 'https://www.youtube.com/iframe_api';
+        const firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        // Load the initial video on page load
+        // window.onload = setVideo;
+
+        // TODO: i think this is redundant, commenting for now
+        // Update the video every hour
+        // setInterval(() => {
+        //     setVideo();
+        // }, 60 * 60 * 1000);
+
+        // function setVideo() {
+        //     player.loadVideoById(getVideoId(), 0); // Start from the beginning
+        //     resetCountdown();
+        //     updateNextUp();
+        // }
     </script>
 </body>
 </html>
