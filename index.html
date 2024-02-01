@@ -84,6 +84,7 @@
         let countdownInterval;
 
         function newPlayer(videoid) {
+            if(player){player.destroy();}
             player = new YT.Player('player', {
                 height: '200',
                 width: '100%',
@@ -121,12 +122,10 @@
 
         function setVideoSwitchInterval() {
             setInterval(() => {
-                //player.loadVideoById(getVideoId(), 0); // Start from the beginning
-                if(player){player.destroy();}
                 player = newPlayer(getVideoId(), 0);
                 resetCountdown();
                 updateNextUp();
-            }, 30 * 1000);
+            }, getSecondsUntilNextHour() * 1000);
 
             // Initial countdown
             updateCountdown(getSecondsUntilNextHour());
