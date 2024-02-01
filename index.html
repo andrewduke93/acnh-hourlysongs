@@ -100,7 +100,7 @@
         }
 
         function onYouTubeIframeAPIReady() {
-            player = newPlayer(getVideoId(), 0);
+            player = newPlayer(getVideoId());
         }
 
         function onPlayerReady(event) {
@@ -122,7 +122,7 @@
 
         function setVideoSwitchInterval() {
             setInterval(() => {
-                player = newPlayer(getVideoId(), 0);
+                player = newPlayer(getVideoId());
                 resetCountdown();
                 updateNextUp();
             }, getSecondsUntilNextHour() * 1000);
