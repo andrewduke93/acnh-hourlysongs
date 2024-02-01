@@ -5,7 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ACNH Hourly Music 🎶</title>
     <style>
-        /* Your existing CSS styles remain unchanged */
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            text-align: center;
+            background-color: #f6f6f6;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #ff69b4;
+            margin-bottom: 10px;
+        }
+
+        #videoContainer {
+            margin-top: 20px;
+        }
+
+        #player {
+            width: 100%;
+            height: 200px;
+            border: 5px solid #ff69b4;
+            border-radius: 10px;
+        }
+
+        #countdown, #nextUp {
+            font-size: 1.2em;
+            margin-top: 10px;
+        }
+
+        @media screen and (min-width: 600px) {
+            #player {
+                height: 315px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -20,12 +53,35 @@
 
     <script>
         const videoUrls = [
-            // Your existing video URLs
+            "https://www.youtube.com/watch?v=vFggKHEsrjY", // 12 AM
+            "https://www.youtube.com/watch?v=E-GeGj9eD_Y", // 1 AM
+            "https://www.youtube.com/watch?v=xJMbtElUepc", // 2 AM
+            "https://www.youtube.com/watch?v=Bg_QdJgL-_U", // 3 AM
+            "https://www.youtube.com/watch?v=gRKuvzw6T6c", // 4 AM
+            "https://www.youtube.com/watch?v=u_VzHJW3HZc", // 5 AM
+            "https://www.youtube.com/watch?v=uG7nIelPQdo", // 6 AM
+            "https://www.youtube.com/watch?v=Zj-z7P-P0eU", // 7 AM
+            "https://www.youtube.com/watch?v=EAp1h3pHa_c", // 8 AM
+            "https://www.youtube.com/watch?v=A6wCdDn-HzA", // 9 AM
+            "https://www.youtube.com/watch?v=iprV6Y9Qj8I", // 10 AM
+            "https://www.youtube.com/watch?v=rHHJpZQe3M0", // 11 AM
+            "https://www.youtube.com/watch?v=zxkVYPjhdaM", // 12 PM
+            "https://www.youtube.com/watch?v=_1tBg0-8bFI", // 1 PM
+            "https://www.youtube.com/watch?v=uzSuYtVZ764", // 2 PM
+            "https://www.youtube.com/watch?v=2Dkm3D4ep8w", // 3 PM
+            "https://www.youtube.com/watch?v=TigX21NsbHI", // 4 PM
+            "https://www.youtube.com/watch?v=dlU6OR-ub70", // 5 PM
+            "https://www.youtube.com/watch?v=TNpieyL1Tt4", // 6 PM
+            "https://www.youtube.com/watch?v=iv7Xg2b1Sig", // 7 PM
+            "https://www.youtube.com/watch?v=xycWcS8G0EU", // 8 PM
+            "https://www.youtube.com/watch?v=LXhG5Lajj7I", // 9 PM
+            "https://www.youtube.com/watch?v=DrQSk1Pch8w", // 10 PM
+            "https://www.youtube.com/watch?v=a73Olh6uufc"  // 11 PM
         ];
 
         const videoTitles = [
             "Animal Crossing Music 12 AM", 
-            "Animal Crossing Music 1 AM",  
+            "Animal Crossing Music 1 AM",
             "Animal Crossing Music 2 AM",
             "Animal Crossing Music 3 AM",
             "Animal Crossing Music 4 AM",
@@ -60,11 +116,12 @@
                 width: '100%',
                 videoId: videoId,
                 playerVars: {
-                    'autoplay': 1, // Enable autoplay
+                    'autoplay': 1,
                     'playlist': videoId,
                     'loop': 1,
                     'start': 0,
-                    'controls': 1
+                    'controls': 1,
+                    'mute': 1 // Start muted
                 },
                 events: {
                     'onReady': onPlayerReady,
@@ -75,12 +132,15 @@
 
         function onYouTubeIframeAPIReady() {
             newPlayer(getVideoId());
-            updateNextUp(); 
+            updateNextUp();
             refreshOnHour();
         }
 
         function onPlayerReady(event) {
             event.target.playVideo();
+            setTimeout(() => {
+                player.unMute();
+            }, 1000); // Unmute after 1 second
             setCountdown();
         }
 
