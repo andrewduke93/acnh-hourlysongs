@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎵🌸 ACNH Hourly Music 🌸🎵</title>
+    <title>🌸 ACNH Hourly Music 🎵</title>
     <style>
         body {
             font-family: 'Comic Sans MS', cursive, sans-serif; /* Comic Sans font */
@@ -26,7 +26,7 @@
             font-weight: bold;
         }
         .audio-player {
-            /* Keep the video player visible */
+            /* Keep the video player hidden with a width and height of "1" */
         }
         .click-prompt {
             font-size: 20px; /* Slightly smaller font size */
@@ -49,7 +49,9 @@
         <h1>🎵🌸 ACNH Hourly Music 🌸🎵</h1>
         <div class="now-playing" id="nowPlaying">Now Playing: </div>
         <div class="up-next" id="upNext">Up Next: </div>
-        <div class="audio-player" id="audioPlayer"></div>
+        <div class="audio-player" id="audioPlayer">
+            <iframe width="1" height="1" src="https://www.youtube.com/embed/vFggKHEsrjY?controls=1&loop=1&playlist=vFggKHEsrjY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
         <div class="countdown" id="countdown"></div>
         <div class="click-prompt">Click anywhere to begin 🎶</div>
     </div>
@@ -120,7 +122,7 @@
 
                 document.getElementById('nowPlaying').innerText = `Now Playing: ${trackTitles[hour]}`;
                 document.getElementById('upNext').innerText = `Up Next: ${trackTitles[nextHour]}`;
-                document.getElementById('audioPlayer').innerHTML = `<iframe width="100%" height="166" src="${embedLink}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+                document.getElementById('audioPlayer').innerHTML = `<iframe width="1" height="1" src="${embedLink}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
             }
         }
 
