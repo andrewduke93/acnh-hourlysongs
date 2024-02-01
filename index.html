@@ -126,7 +126,7 @@
                 player = newPlayer(getVideoId(), 0);
                 resetCountdown();
                 updateNextUp();
-            }, getSecondsUntilNextHour() * 1000);
+            }, 30 * 1000);
 
             // Initial countdown
             updateCountdown(getSecondsUntilNextHour());
