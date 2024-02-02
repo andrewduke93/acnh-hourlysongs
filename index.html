@@ -100,6 +100,9 @@
 
         function onPlayerStateChange(event) {
             console.log("state is: " + player.getPlayerState());
+            if (player.getPlayerState() == -1) {
+                player.seekTo(0);
+            }
             if (event.data == YT.PlayerState.ENDED) {
               player.seekTo(0);
               player.playVideo();
