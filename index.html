@@ -102,11 +102,16 @@
         function onPlayerStateChange(event) {
             console.log("state is: " + player.getPlayerState());
             if (player.getPlayerState() == -1) {
+                console.log("attempting seek on unstarted video");
                 player.seekTo(0);
             }
             if (event.data == YT.PlayerState.ENDED) {
               player.seekTo(0);
               player.playVideo();
+            }
+            if (event.data == YT.PlayerState.PLAYING) {
+                console.log("attempting unmute on playing video");
+                player.unMute();
             }
           }
 
