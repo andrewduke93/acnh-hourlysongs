@@ -106,7 +106,7 @@
           }
 
         function onPlayerReady(event) {
-            player.seekTo(0);
+            console.log("state is: " + player.getPlayerState());
             event.target.addEventListener('click', () => {
                 const playPromise = player.play();
 
