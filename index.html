@@ -83,26 +83,27 @@
         let player;
         let countdownInterval;
 
-        function newPlayer(videoid) {
-            if(player){player.destroy();}
+        function onYouTubeIframeAPIReady() {
             player = new YT.Player('player', {
                 height: '200',
                 width: '100%',
                 videoId: videoid,
                 playerVars: {
-                    'playlist': videoid,
-                    'loop': 1,
                     'start': 0,
                 },
                 events: {
-                    'onReady': onPlayerReady
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
                 }
             });
         }
 
-        function onYouTubeIframeAPIReady() {
-            player = newPlayer(getVideoId());
-        }
+        function onPlayerStateChange(event) {
+            if (event.data == YT.PlayerState.ENDED) {
+              player.seekTo(0);
+              player.playVideo();
+            }
+          }
 
         function onPlayerReady(event) {
             event.target.addEventListener('click', () => {
@@ -123,7 +124,7 @@
 
         function setVideoSwitchInterval() {
             setInterval(() => {
-                player = newPlayer(getVideoId());
+                player.loadVideoById(getVideoId(), 0)
                 resetCountdown();
                 updateNextUp();
             }, getSecondsUntilNextHour() * 1000);
